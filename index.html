@@ -1,0 +1,42 @@
+<html>
+    <body>
+        <script>
+            function QueryToString(query){
+                var Final = {};
+                var Varibles = query.split("&");
+                for (var i = 0; i < Varibles.length; i++) {
+                    var s = Varibles[i].split("=");
+                    var k = decodeURIComponent(s[0]);
+                    var v = decodeURIComponent(s[1]);
+                    if (typeof Final[k] === "undefined") {
+                        Final[k] = decodeURIComponent(v);
+                    }
+                }
+                return Final; 
+            }
+
+            var Query = window.location.search.substring(1);
+            var Cleaned_Query = QueryToString(Query);
+
+            var xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function(){
+                if (this.readyState == 4 && this.status == 200) {
+                    var Response = this.responseText;
+                    if (Response == "0"){
+                        document.write("Weird error :/");
+                    } else if (Response == "1"){
+                        document.write("User doesn't exist :/");
+                    } else {
+                        var Data = JSON.parse(Response);
+                        for (i = 0; i < Data.length; i++) {
+                            document.write(Response);
+                        }
+                    }
+                }
+            }
+            xhttp.open("POST", "https://loader.hammafia.co/getSubs.php", true);
+            xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+            xhttp.send("username=" + Cleaned_Query.Username);
+        </script> 
+    </body>
+</html>
